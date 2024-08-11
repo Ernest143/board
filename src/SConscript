@@ -1,0 +1,21 @@
+from building import *
+
+cwd = GetCurrentDir()
+
+# Board Include
+CPPPATH = [
+    cwd,
+]
+
+# Board Source
+SRC_C = Glob(f"{cwd}/*c")
+
+# for i in CPPPATH:
+#     print("{} is {}".format(i, os.path.isdir(i)))
+
+# for i in SRC_C:
+#     print("{} is {}".format(i, os.path.isfile(i)))
+
+objs = DefineGroup("core", SRC_C, depend= [""], CPPPATH = CPPPATH, LOCAL_CPPDEFINES=['__RT_IPC_SOURCE__'])
+
+Return("objs")

@@ -1,0 +1,49 @@
+# sys.path.append("../tools/")
+# sys.path.append("../ports/stm32f1")
+import os
+from building import *
+
+
+cwd = GetCurrentDir()
+Import("bconfig")
+
+# Libraries Include
+CPPPATH = [
+	os.path.join(cwd, f"{bconfig.CMSIS_5}/CMSIS/Core/Include"),
+	os.path.join(cwd, f"{bconfig.ST_CMSIS}/Include"),
+	os.path.join(cwd, f"{bconfig.ST_HAL_DRIVER}/Inc"),
+]
+
+# Libraries Source
+SRC_C = [
+    os.path.join(cwd, f"{bconfig.ST_CMSIS}/Source/Templates/gcc/startup_stm32f103xe.s"),
+	os.path.join(cwd, f"{bconfig.ST_CMSIS}/Source/Templates/system_stm32f1xx.c"),
+	os.path.join(cwd, f"{bconfig.ST_HAL_DRIVER}/Src/stm32f1xx_hal.c"),
+	os.path.join(cwd, f"{bconfig.ST_HAL_DRIVER}/Src/stm32f1xx_hal_cortex.c"),
+	os.path.join(cwd, f"{bconfig.ST_HAL_DRIVER}/Src/stm32f1xx_hal_rcc.c"),
+	os.path.join(cwd, f"{bconfig.ST_HAL_DRIVER}/Src/stm32f1xx_hal_rcc_ex.c"),
+	os.path.join(cwd, f"{bconfig.ST_HAL_DRIVER}/Src/stm32f1xx_hal_gpio.c"),
+	os.path.join(cwd, f"{bconfig.ST_HAL_DRIVER}/Src/stm32f1xx_hal_gpio_ex.c"),
+	os.path.join(cwd, f"{bconfig.ST_HAL_DRIVER}/Src/stm32f1xx_hal_flash.c"),
+	os.path.join(cwd, f"{bconfig.ST_HAL_DRIVER}/Src/stm32f1xx_hal_flash_ex.c"),
+	os.path.join(cwd, f"{bconfig.ST_HAL_DRIVER}/Src/stm32f1xx_hal_uart.c"),
+	os.path.join(cwd, f"{bconfig.ST_HAL_DRIVER}/Src/stm32f1xx_hal_dma.c"),
+	os.path.join(cwd, f"{bconfig.ST_HAL_DRIVER}/Src/stm32f1xx_hal_iwdg.c"),
+	os.path.join(cwd, f"{bconfig.ST_HAL_DRIVER}/Src/stm32f1xx_hal_pwr.c"),
+	os.path.join(cwd, f"{bconfig.ST_HAL_DRIVER}/Src/stm32f1xx_hal_tim.c"),
+	os.path.join(cwd, f"{bconfig.ST_HAL_DRIVER}/Src/stm32f1xx_hal_tim_ex.c"),
+	os.path.join(cwd, f"{bconfig.ST_HAL_DRIVER}/Src/stm32f1xx_hal_rtc.c"),
+	os.path.join(cwd, f"{bconfig.ST_HAL_DRIVER}/Src/stm32f1xx_hal_rtc_ex.c"),
+]
+# print(cwd)
+
+# for i in CPPPATH:
+#     print("{} is {}".format(i, os.path.isdir(i)))
+
+# for i in SRC_C:
+#     print("{} is {}".format(i, os.path.isfile(i)))
+
+objs = DefineGroup("lib", SRC_C, depend= [""], CPPPATH = CPPPATH, LOCAL_CPPDEFINES=['__RT_IPC_SOURCE__'])
+# objs = env.Object(SRC_C)
+
+Return("objs")

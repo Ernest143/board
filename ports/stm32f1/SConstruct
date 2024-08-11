@@ -1,0 +1,37 @@
+import os
+import sys
+import bconfig
+
+if os.getenv("BOARD_ROOT"):
+    BOARD_ROOT = os.getenv("BOARD_ROOT")
+else:
+    BOARD_ROOT = os.path.normpath(os.getcwd() + "/../..")
+
+# tools direction add sys path
+sys.path += [os.path.join(BOARD_ROOT, "tools")]
+try:
+    from building import *
+except:
+    print("Cannot found Board root directory, Please check BOARD_ROOT")
+    print(BOARD_ROOT)
+    exit(-1)
+
+TARGET = "board." + bconfig.TARGET_EXT
+
+DefaultEnvironment(tools=[])
+
+env = Environment(tools=["mingw"],
+    AS = bconfig.AS, ASFLAGS = bconfig.AFLAGS,
+    CC = bconfig.CC, CFLAGS = bconfig.CFLAGS,
+    AR = bconfig.AR, ARFLAGS = "-rc",
+    LINK = bconfig.LINK, LINKFLAGS = bconfig.LFLAGS)
+env.PrependENVPath("PATH", bconfig.EXEC_PATH)
+
+Export("BOARD_ROOT")
+Export("bconfig")
+
+# prepare building environment
+objs = PrepareBuilding(env, BOARD_ROOT, has_libcpu=False)
+
+# make a building
+DoBuilding(TARGET, objs)

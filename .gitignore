@@ -4,3 +4,8 @@
 _build/
 _bin/
 build/
+*.json
+*.pyc
+*.bin
+*.elf
+*.map

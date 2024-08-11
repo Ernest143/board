@@ -1,0 +1,36 @@
+# import sys
+# sys.path.append("../../tools/")
+# sys.path.append("../ports/stm32f1")
+
+import os
+from building import *
+
+cwd = GetCurrentDir()
+Import("bconfig")
+
+objs = []
+# Port Include
+CPPPATH = [
+    cwd,
+    os.path.join(cwd, f"boards/{bconfig.BOARD_BASE}"),
+]
+
+# Port Source
+SRC_C = Glob(f"{cwd}/*c")
+# print(SRC_C)
+
+# for i in CPPPATH:
+#     print("{} is {}".format(i, os.path.isdir(i)))
+
+# for i in SRC_C:
+#     print("{} is {}".format(i, os.path.isfile(i)))
+
+objs += DefineGroup("ports", SRC_C, depend= [""], CPPPATH = CPPPATH, LOCAL_CPPDEFINES=['__RT_IPC_SOURCE__'])
+
+list = os.listdir(cwd)
+for d in list:
+    path = os.path.join(cwd, d)
+    if os.path.isfile(os.path.join(path, "SConscript")):
+        objs += SConscript(os.path.join(d, "SConscript"))
+# print(objs)
+Return("objs")
