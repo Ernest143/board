@@ -34,6 +34,7 @@
 // check if we just reset by option bytes load i.e protection changes
 bool board_reset_by_option_bytes(void);
 
+
 #ifdef __cplusplus
  }
 #endif
