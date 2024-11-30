@@ -9,6 +9,9 @@
 #include "board_base.h"
 #include "stm32f1xx.h"
 #include "stm32f1xx_hal_conf.h"
+#include "delay.h"
+#include "usart.h"
+#include "key.h"
 
 #define BOARD_FLASH_ADDR_ZERO   0x08000000
 
@@ -32,7 +35,7 @@
 //--------------------------------------------------------------------+
 
 // check if we just reset by option bytes load i.e protection changes
-bool board_reset_by_option_bytes(void);
+// bool board_reset_by_option_bytes(void);
 
 
 #ifdef __cplusplus

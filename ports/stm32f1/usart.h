@@ -1,7 +1,7 @@
 #ifndef __USART_H
 #define __USART_H
 
-#include "board_api.h"
+#include "board_base.h"
 
 #define USART_REC_LEN               55 * 1024
 #define USART_EN_RX                 1

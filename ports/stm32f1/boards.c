@@ -1,5 +1,6 @@
 #include "board_api.h"
 #include "usart.h"
+#include "sys.h"
 #include "rtc.h"
 
 //--------------------------------------------------------------------+
@@ -10,11 +11,8 @@
 
 typedef void (*pFunction)(void); /*!<Function pointer definition */
 
-static bool reset_by_option_bytes = false;
 
-static void clock_init(void);
 static void board_gpio_init(void);
-static void Error_Handler(void);
 
 static void board_gpio_init(void)
 {
@@ -60,17 +58,11 @@ static void board_gpio_init(void)
 
 }
 
-bool board_reset_by_option_bytes(void)
-{
-    return reset_by_option_bytes;
-}
-
 void board_init(void)
 {
-    // reset_by_option_bytes = !!(__HAL_RCC_GET_FLAG(RCC_FLAG_OBLRST));
-
-    HAL_Init();
-    clock_init();
+    sys_clock_init(9);
+    // clock_init();
+    delay_init(72);
     rtc_init();
     SystemCoreClockUpdate();
 
@@ -87,12 +79,19 @@ void board_reset(void)
 
 bool board_app_valid(void)
 {
-    // && ((*(uint32_t*)BOARD_FLASH_APP_START + 4) > BOARD_FLASH_APP_START) && ((*(uint32_t*)BOARD_FLASH_APP_START + 4) < BOARD_FLASH_APP_START + BOARD_FLASH_SIZE)
-    if((((*(uint32_t*)BOARD_FLASH_APP_START) - BOARD_RAM_START) <= BOARD_RAM_SIZE)) 
-    {
-        return true;
-    }
+    volatile uint32_t const * app_vector = (volatile uint32_t const*) BOARD_FLASH_APP_START;
+    uint32_t sp = app_vector[0];
+    uint32_t app_entry = app_vector[1];
+
+    // 1st word is stack pointer (must be in SRAM region)
+    if ((sp & 0xff000003) != 0x20000000) return false;
+
+    // 2nd word is App entry point (reset)
+    if (app_entry < BOARD_FLASH_APP_START || app_entry > BOARD_FLASH_APP_START + BOARD_FLASH_SIZE) {
     return false;
+    }
+
+    return true;
 }
 
 void board_app_jump(void)
@@ -174,7 +173,6 @@ void board_sysmem_jump(void)
     __set_MSP(sp);
 
     // Jump to System Memory Entry
-    // asm("bx %0" ::"r"(sysmem_entry));
     sysmem_entry();
 }
 
@@ -190,49 +188,4 @@ void board_timer_start(uint32_t ms)
 void board_timer_stop(void)
 {
     SysTick->CTRL &= ~SysTick_CTRL_ENABLE_Msk;
-}
-
-//--------------------------------------------------------------------+
-// RCC Clock
-//--------------------------------------------------------------------+
-static void clock_init(void)
-{
-  RCC_OscInitTypeDef RCC_OscInitStruct = {0};
-  RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
-
-  /** Initializes the RCC Oscillators according to the specified parameters
-  * in the RCC_OscInitTypeDef structure.
-  */
-  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE|RCC_OSCILLATORTYPE_LSI;
-  RCC_OscInitStruct.HSEState = RCC_HSE_ON;
-  RCC_OscInitStruct.HSEPredivValue = RCC_HSE_PREDIV_DIV1;
-  RCC_OscInitStruct.HSIState = RCC_HSI_ON;
-  RCC_OscInitStruct.LSIState = RCC_LSI_ON;
-  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
-  RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
-  RCC_OscInitStruct.PLL.PLLMUL = RCC_PLL_MUL9;
-  if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK) {
-    Error_Handler();
-  }
-  /** Initializes the CPU, AHB and APB buses clocks
-  */
-  RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
-                              |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
-  RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
-  RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
-  RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2;
-  RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
-
-  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2) != HAL_OK) {
-    Error_Handler();
-  }
-
-  // /* Enable Power Clock */
-  // __HAL_RCC_PWR_CLK_ENABLE();
-}
-
-static void Error_Handler(void)
-{
-    __disable_irq();
-    while (1) {}
 }

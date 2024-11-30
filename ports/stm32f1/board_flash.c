@@ -214,9 +214,9 @@ void board_flash_erase_app(void)
 
 bool board_flash_protect_bootloader(bool protect)
 {
-    if (board_reset_by_option_bytes()) {
-        return true;
-    }
+    // if (board_reset_by_option_bytes()) {
+    //     return true;
+    // }
 
     bool ret = true;
 

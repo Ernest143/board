@@ -1,5 +1,8 @@
 #include "usart.h"
 #include "stm32f1xx_hal_uart.h"
+#include <stdio.h>
+#include <string.h>
+#include "delay.h"
 
 #define LED0_TOGGLE() do { HAL_GPIO_TogglePin(LED0_GPIO_PORT, LED0_PIN);}while(0)
 
@@ -14,49 +17,49 @@ uint32_t g_usart_rx_offset = 0u;
 // static void usart_recive_byte(void);
 static void usart_recive_stream(void);
 
-// #if 1
+#if 1
 
 // #pragma import(__use_no_semihosting)
 
-// struct __FILE
-// {
-//     int handle;
-// };
+struct __FILE
+{
+    int handle;
+};
 
-// FILE __stdout;
+FILE __stdout;
 
-// int __ttywrch(int ch)
-// {
-//     ch = ch;
-//     return ch;
-// }
+int __ttywrch(int ch)
+{
+    ch = ch;
+    return ch;
+}
 
-// void __sys_exit(int x)
-// {
-//     x = x;
-// }
+void __sys_exit(int x)
+{
+    x = x;
+}
 
-// char *_sys_command_string(char *cmd, int len)
-// {
-//     return NULL;
-// }
+char *_sys_command_string(char *cmd, int len)
+{
+    return NULL;
+}
 
-// #ifdef __GNUC__
-// #define PUTCHAR_PROTOTYPE int __write(int fd, char *pBuffer, int size)
-// #else
-// #define PUTCHAR_PROTOTYPE int fputc(int ch, FILE *f)
-// #endif
-// PUTCHAR_PROTOTYPE
-// {
-//     for (int i = 0; i < size; i++) {
-//         while((USART_UX->SR & 0x40) == 0);
-//         USART_UX->DR = (uint8_t)pBuffer[i];
-//     }
-//     return size;
-// }
+#ifdef __GNUC__
+#define PUTCHAR_PROTOTYPE int __write(int fd, char *pBuffer, int size)
+#else
+#define PUTCHAR_PROTOTYPE int fputc(int ch, FILE *f)
+#endif
+PUTCHAR_PROTOTYPE
+{
+    for (int i = 0; i < size; i++) {
+        while((USART_UX->SR & 0x40) == 0);
+        USART_UX->DR = (uint8_t)pBuffer[i];
+    }
+    return size;
+}
 
 
-// #endif
+#endif
 
 int _write (int fd, char *pBuffer, int size)
 {
@@ -95,7 +98,7 @@ void UART_Send_Msg(void)
             LED0_TOGGLE();
         }
 
-        HAL_Delay(10);
+        delay_ms(10);
     }
 }
 

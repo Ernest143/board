@@ -1,6 +1,7 @@
 #include "rtc.h"
 #include "usual.h"
 #include <stdio.h>
+#include "delay.h"
 
 RTC_HandleTypeDef g_rtc_handle;
 _calendar_obj calendar;
@@ -66,7 +67,7 @@ void HAL_RTC_MspInit(RTC_HandleTypeDef *hrtc)
 
     while (retry && ((RCC->BDCR & 0x02) == 0)) {
         retry--;
-        HAL_Delay(5);
+        delay_ms(5);
     }
 
     if (retry == 0) {

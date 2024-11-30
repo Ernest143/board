@@ -1,10 +1,9 @@
 #include "board_api.h"
-#include "usart.h"
-#include "key.h"
 
 #define DEV_JUMPTOAPP_CNT 20
 
-uint32_t g_jumpRetryCnt = 0u;
+static bool check_dfu_mode(void);
+// uint32_t g_jumpRetryCnt = 0u;
 
 int main(void)
 {
@@ -15,17 +14,22 @@ int main(void)
 
     while (1) {
         uint32_t datalength = usart_recive_data_length();
-        uint8_t datatemp[7];
+        // uint8_t datatemp[7];
 
         t++;
-        HAL_Delay(100);
+        delay_ms(100);
         if (t == 3) {
             LED0_TOGGLE();
             t = 0;
         }
 
-        board_flash_read(BOARD_FLASH_TOP_SPACE, (void *)datatemp, 8);
-        if ((strncmp((const char *)datatemp, "UPDATE", 6) == 0) || g_jumpRetryCnt > DEV_JUMPTOAPP_CNT) {
+        if (check_dfu_mode()) {
+            board_app_jump();
+            while(1) {};
+        }
+
+        // board_flash_read(BOARD_FLASH_TOP_SPACE, (void *)datatemp, 8);
+        // if ((strncmp((const char *)datatemp, "UPDATE", 6) == 0) || g_jumpRetryCnt > DEV_JUMPTOAPP_CNT) {
             key = key_scan(0);
             if (key == WKUP_PRES) {
                 if (datalength) {
@@ -42,10 +46,16 @@ int main(void)
                     printf("No firmware to update!\r\n");
                 }
             }
-        } else {
-            board_app_jump();
-            g_jumpRetryCnt++;
-        }
+        // } else {
+        //     board_app_jump();
+        //     g_jumpRetryCnt++;
+        // }
 
     }
+}
+
+static bool check_dfu_mode(void)
+{
+    if (board_app_valid()) return true;
+    return false;
 }

@@ -1,4 +1,5 @@
 #include "key.h"
+#include "delay.h"
 
 uint8_t key_scan(uint8_t mode)
 {
@@ -10,7 +11,7 @@ uint8_t key_scan(uint8_t mode)
     {
         /* 按键松开标志为 1, 且有任意一个按键按下了 */
         /* 去抖动 */ 
-        HAL_Delay(10);
+        delay_ms(10);
         key_up = 0;
         if (KEY0 == 0) keyval = KEY0_PRES;
         if (KEY1 == 0) keyval = KEY1_PRES;
