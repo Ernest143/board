@@ -358,7 +358,7 @@ def PrepareBuilding(env, root_directory, has_libcpu=False, remove_components = [
     # include lib
     objs.extend(SConscript(Board_Root + '/lib/SConscript', variant_dir=bsp_vdir + '/lib', duplicate=0))
     objs.extend(SConscript(Board_Root + '/src/SConscript', variant_dir=bsp_vdir + '/src', duplicate=0))
-    objs.extend(SConscript(Board_Root + '/boot/SConscript', variant_dir=bsp_vdir + '/boot', duplicate=0))
+    objs.extend(SConscript(Board_Root + '/app/SConscript', variant_dir=bsp_vdir + '/app', duplicate=0))
     # include libcpu
     # if not has_libcpu:
     #     objs.extend(SConscript(Board_Root + '/libcpu/SConscript',

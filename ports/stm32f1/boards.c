@@ -23,15 +23,6 @@ static void board_gpio_init(void)
 
     GPIO_InitTypeDef GPIO_InitStruct = {0};
 
-    /*Configure GPIO pin : LED0_Pin */
-    GPIO_InitStruct.Pin = LED0_PIN;
-    GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-    GPIO_InitStruct.Pull = GPIO_PULLUP;
-    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
-    HAL_GPIO_Init(LED0_GPIO_PORT, &GPIO_InitStruct);
-    GPIO_InitStruct.Pin = LED1_PIN;
-    HAL_GPIO_Init(LED1_GPIO_PORT, &GPIO_InitStruct);
-
     GPIO_InitStruct.Pin = BEEP_PIN;
     GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
     GPIO_InitStruct.Pull = GPIO_PULLUP;
@@ -70,6 +61,7 @@ void board_init(void)
     board_timer_stop();
     board_gpio_init();
     MX_USART1_UART_Init();
+    gtim_timx_pwm_chy_init();
 }
 
 void board_reset(void)

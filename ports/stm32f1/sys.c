@@ -58,21 +58,21 @@ uint8_t sys_clock_set(uint32_t plln)
 
 void sys_clock_init(uint32_t plln)
 {
-    RCC->APB1RSTR = 0x00000000;     
+    RCC->APB1RSTR = 0x00000000;
     RCC->APB2RSTR = 0x00000000;
     
-    RCC->AHBENR = 0x00000014;       
-    RCC->APB2ENR = 0x00000000;      
+    RCC->AHBENR = 0x00000014;
+    RCC->APB2ENR = 0x00000000;
     RCC->APB1ENR = 0x00000000;
     
-    RCC->CR |= 0x00000001;          
-    RCC->CFGR &= 0xF8FF0000;        
-    RCC->CR &= 0xFEF6FFFF;          
-    RCC->CR &= 0xFFFBFFFF;          
-    RCC->CFGR &= 0xFF80FFFF;        
+    RCC->CR |= 0x00000001;
+    RCC->CFGR &= 0xF8FF0000;
+    RCC->CR &= 0xFEF6FFFF;
+    RCC->CR &= 0xFFFBFFFF;
+    RCC->CFGR &= 0xFF80FFFF;
     RCC->CIR = 0x009F0000;
 
     sys_clock_set(plln);
 
-    sys_nvic_set_vector_table(BOARD_FLASH_ADDR_ZERO, 0x0);
+    sys_nvic_set_vector_table(BOARD_FLASH_ADDR_ZERO, 0x10000);
 }

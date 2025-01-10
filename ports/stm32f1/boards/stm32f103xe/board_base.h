@@ -81,6 +81,7 @@
 #define LCD_FSMC_BTRX        FSMC_Bank1->BTCR[(LCD_FSMC_NEX - 1) * 2 + 1]   /* BTR�Ĵ���,����LCD_FSMC_NEX�Զ����� */
 #define LCD_FSMC_BWTRX       FSMC_Bank1E->BWTR[(LCD_FSMC_NEX - 1) * 2]      /* BWTR�Ĵ���,����LCD_FSMC_NEX�Զ����� */
 
+#define BOARD_LIST_NUM(list)    (sizeof(list) / sizeof(list[0]))
 //--------------------------------------------------------------------+
 // Flash
 //--------------------------------------------------------------------+

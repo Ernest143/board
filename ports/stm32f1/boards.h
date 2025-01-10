@@ -12,6 +12,8 @@
 #include "delay.h"
 #include "usart.h"
 #include "key.h"
+#include "motor_tim.h"
+#include "motor_ctl.h"
 
 #define BOARD_FLASH_ADDR_ZERO   0x08000000
 
