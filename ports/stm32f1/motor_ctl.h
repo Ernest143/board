@@ -49,8 +49,8 @@ typedef struct
 void motor_init(void);
 void set_motor_speed(MotorCtlType* motorCtl, uint16_t v);
 void set_motor_direction(MotorCtlType* motorCtl, motor_dir_t dir);
-void set_motor_enable();
-void set_motor_disable();
 void set_vehicle_speed(uint16_t v);
 void set_vehicle_direction(motor_dir_t dir);
+void set_motor_enable(void);
+void set_motor_disable(void);
 #endif

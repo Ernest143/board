@@ -61,7 +61,10 @@ void board_init(void)
     board_timer_stop();
     board_gpio_init();
     MX_USART1_UART_Init();
-    gtim_timx_pwm_chy_init();
+    motor_init();
+    remote_init();
+    set_motor_enable();
+    key_pres_tim_init();
 }
 
 void board_reset(void)

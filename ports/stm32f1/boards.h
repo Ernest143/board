@@ -14,6 +14,9 @@
 #include "key.h"
 #include "motor_tim.h"
 #include "motor_ctl.h"
+#include "remote.h"
+#include "remote_motor.h"
+#include "key_press.h"
 
 #define BOARD_FLASH_ADDR_ZERO   0x08000000
 
