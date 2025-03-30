@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdbool.h>
 #include "motor_ctl.h"
 
 
@@ -42,6 +43,17 @@ void set_motor_direction(MotorCtlType* motorCtl, motor_dir_t dir)
   {
     SET_FWD_COMPAER(motorCtl->motorPosition, 0);
     SET_REV_COMPAER(motorCtl->motorPosition, motorCtl->dutyfactor);
+  }
+}
+
+void set_vehicle_rotation(uint8_t on)
+{
+  if (on == 0) {
+    set_motor_direction(&g_motorCtlList[0], MOTOR_FWD);
+    set_motor_direction(&g_motorCtlList[1], MOTOR_REV);
+  } else {
+    set_motor_direction(&g_motorCtlList[1], MOTOR_FWD);
+    set_motor_direction(&g_motorCtlList[0], MOTOR_REV);
   }
 }
 
@@ -112,4 +124,31 @@ void set_motor_disable(void)
   MOTOR_FWD_DISABLE(1);
   MOTOR_REV_DISABLE(0);
   MOTOR_REV_DISABLE(1);
+}
+
+void motor_ctl(uint8_t pos, uint8_t on)
+{
+  if (on == true)
+  {
+    if (pos == 0)
+    {
+      MOTOR_ENABLE_A();
+    } else
+    {
+      MOTOR_ENABLE_B();
+    }
+    MOTOR_FWD_ENABLE(pos);
+    MOTOR_REV_ENABLE(pos);
+  } else
+  {
+    if (pos == 0)
+    {
+      MOTOR_DISABLE_A();
+    } else
+    {
+      MOTOR_DISABLE_B();
+    }
+    MOTOR_FWD_DISABLE(pos);
+    MOTOR_REV_DISABLE(pos);
+  }
 }

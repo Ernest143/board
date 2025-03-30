@@ -1,8 +1,5 @@
 #include "key_cfg.h"
 #include "remote.h"
-#include <stdio.h>
-#include <string.h>
-#include "motor_ctl.h"
 #include "rtc.h"
 
 key_configure_typedef g_key_config[] = {
@@ -35,6 +32,8 @@ key_info_typedef g_key_event[BOARD_LIST_NUM(g_key_config)];
 key_cfg_list_typedef g_key_list = {
     .num = BOARD_LIST_NUM(g_key_config),
     .list = g_key_config,
+    .eventList = g_key_event,
+    .tmpCnt = tmpcnt,
 };
 
 void key_pres_tim_init(void)
@@ -70,71 +69,9 @@ void GTIM_TIMX_INT_IRQHandler(void)
         {
             if ((key == g_key_list.list[idx].key_label) || (key == 0))
             {
-                key_read_state_machine(&(g_key_list.list[idx]), tmpcnt, g_key_event, key);
+                key_read_state_machine(&(g_key_list.list[idx]), g_key_list.tmpCnt, g_key_list.eventList, key);
             }
         }
         __HAL_TIM_CLEAR_IT(&g_timx_handle, TIM_IT_UPDATE);  /* 清除定时器溢出中断标志位 */
     }
-}
-
-uint16_t ChannelPulse = 0;
-
-void key_process(void)
-{
-    uint32_t idx;
-    for (idx = 0; idx < BOARD_LIST_NUM(g_key_event); idx++)
-    {
-        if (g_key_event[idx].key_event == key_event_single_click)
-        {
-            printf("%s, %d, %d\n", g_key_event[idx].key_str, g_key_event[idx].key_label, g_key_event[idx].key_count);
-            if (g_key_event[idx].key_label == REMOTE_KEY_UP)
-            {
-                set_vehicle_direction(MOTOR_FWD);
-                printf("up motor!!!");
-            }
-            if (g_key_event[idx].key_label == REMOTE_KEY_DOWN)
-            {
-                set_vehicle_direction(MOTOR_REV);
-                printf("down motor!!!");
-            }
-            if (g_key_event[idx].key_label == REMOTE_KEY_VOL_ADD)
-            {
-                ChannelPulse += PWM_MAX_PERIOD_COUNT/10;
-                if (ChannelPulse > PWM_MAX_PERIOD_COUNT)
-                {
-                    ChannelPulse = PWM_MAX_PERIOD_COUNT;
-                }
-                set_vehicle_speed(ChannelPulse);
-                printf("+++ speed %d\n", ChannelPulse);
-            }
-            if (g_key_event[idx].key_label == REMOTE_KEY_VOL_RDC)
-            {
-            if (ChannelPulse < PWM_MAX_PERIOD_COUNT/10)
-            {
-                ChannelPulse = 0;
-            }
-            else
-            {
-                ChannelPulse -= PWM_MAX_PERIOD_COUNT/10;
-            }
-            set_vehicle_speed(ChannelPulse);
-            printf("--- speed %d\n", ChannelPulse);
-
-            }
-            static uint8_t motorScnt = 0u;
-            if (g_key_event[idx].key_label == REMOTE_KEY_PLAY)
-            {
-                if (motorScnt % 2)
-                {
-                    set_motor_disable();
-                }
-                else
-                {
-                    set_motor_enable();
-                }
-                motorScnt++;
-            }
-        }
-    }
-    memset(g_key_event, 0, sizeof(g_key_event));
 }

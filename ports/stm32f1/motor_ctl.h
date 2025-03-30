@@ -52,5 +52,7 @@ void set_motor_direction(MotorCtlType* motorCtl, motor_dir_t dir);
 void set_vehicle_speed(uint16_t v);
 void set_vehicle_direction(motor_dir_t dir);
 void set_motor_enable(void);
+void motor_ctl(uint8_t pos, uint8_t on);
 void set_motor_disable(void);
+void set_vehicle_rotation(uint8_t on);
 #endif

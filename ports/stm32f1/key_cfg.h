@@ -5,7 +5,9 @@
 
 typedef struct {
     uint32_t num;
+    uint16_t *tmpCnt;
     key_configure_typedef *list;
+    key_info_typedef *eventList;
 } key_cfg_list_typedef;
 
 extern key_cfg_list_typedef g_key_list;

@@ -90,7 +90,6 @@ typedef struct
 
 
 void key_pres_tim_init(void);
-void key_process(void);
 void key_read_state_machine(key_configure_typedef *key_cfg, uint16_t *tmpcnt, key_info_typedef *g_key_event, uint8_t key);
 
 #endif
