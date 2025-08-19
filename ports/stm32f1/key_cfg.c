@@ -64,7 +64,6 @@ void GTIM_TIMX_INT_IRQHandler(void)
     {
         uint32_t idx;
         uint8_t key = remote_scan();    // 连续输入
-        // printf("key %d, time %d\n", key, calendar.sec);
         for (idx = 0; idx < g_key_list.num; idx++)
         {
             if ((key == g_key_list.list[idx].key_label) || (key == 0))
