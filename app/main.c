@@ -3,6 +3,7 @@
 int main(void)
 {
     board_init();
+    printf(" app start...\r\n");
 
     while (1)
     {

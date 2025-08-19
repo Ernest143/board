@@ -33,7 +33,7 @@
 #define BOARD_RAM_START 0x20000000
 #define BOARD_RAM_SIZE 0x9FFF
 
-#define BOARD_FLASH_TOP_SPACE   0x807FFF8
+#define BOARD_FLASH_TOP_SPACE   0x807F800
 //--------------------------------------------------------------------+
 // Port specific APIs
 // Only used with port source
