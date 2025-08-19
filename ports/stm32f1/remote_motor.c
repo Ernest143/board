@@ -104,7 +104,7 @@ void remote_motor(void)
 
           if (g_key_list.eventList[idx].key_label == REMOTE_KEY_4)
           {
-            printf("firameware update...\n");
+            printf("firameware update... win\n");
             board_flash_write(BOARD_FLASH_TOP_SPACE, (void const *)"UPDATE", 8);
             board_reset();
           }
