@@ -94,6 +94,7 @@
 // Init basic peripherals such as clock, led indicator control (gpio, pwm etc ..)
 // This API does not init usb which is only init if DFU is entered
 void board_init(void);
+void board_deinit(void);
 
 // board_init2 is the same as board_init, but allows custom boards
 // to have a chance at board_init without modifying the boards.c file.

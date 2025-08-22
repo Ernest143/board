@@ -67,9 +67,27 @@ void board_init(void)
     key_pres_tim_init();
 }
 
+void board_deinit(void)
+{
+    HAL_GPIO_DeInit(BEEP_GPIO_PORT, BEEP_PIN);
+    HAL_GPIO_DeInit(KEY0_GPIO_PORT, KEY0_PIN);
+    HAL_GPIO_DeInit(KEY1_GPIO_PORT, KEY1_PIN);
+    HAL_GPIO_DeInit(WKUP_GPIO_PORT, WKUP_PIN);
+
+    __HAL_RCC_GPIOA_CLK_DISABLE();
+    __HAL_RCC_GPIOB_CLK_DISABLE();
+    __HAL_RCC_GPIOE_CLK_DISABLE();
+    __HAL_RCC_AFIO_CLK_DISABLE();
+
+    HAL_DeInit();
+    HAL_RCC_DeInit();
+    MX_USART1_UART_DeInit();
+}
+
 void board_reset(void)
 {
-  NVIC_SystemReset();
+    board_deinit();
+    NVIC_SystemReset();
 }
 
 bool board_app_valid(void)

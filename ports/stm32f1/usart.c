@@ -132,6 +132,11 @@ void MX_USART1_UART_Init(void)
 
 }
 
+void MX_USART1_UART_DeInit(void)
+{
+    HAL_UART_DeInit(&huart1);
+}
+
 /**
   * @brief GPIO Initialization Function
   * @param None

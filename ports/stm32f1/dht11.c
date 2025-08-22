@@ -23,11 +23,11 @@ static void DHT11_DataPin_Configure_Output(void)
 {
 	GPIO_InitTypeDef GPIO_InitStructure;
 
-  __HAL_RCC_GPIOA_CLK_ENABLE(); //使能PD端口时钟
-  GPIO_InitStructure.Pin = DHT11_PIN; //PD.0 端口配置
-  GPIO_InitStructure.Mode = GPIO_MODE_OUTPUT_PP; //推挽输出
-  GPIO_InitStructure.Speed = GPIO_SPEED_FREQ_HIGH;
-  HAL_GPIO_Init(DHT11_PORT, &GPIO_InitStructure);
+	__HAL_RCC_GPIOA_CLK_ENABLE(); //使能PD端口时钟
+	GPIO_InitStructure.Pin = DHT11_PIN; //PD.0 端口配置
+	GPIO_InitStructure.Mode = GPIO_MODE_OUTPUT_PP; //推挽输出
+	GPIO_InitStructure.Speed = GPIO_SPEED_FREQ_HIGH;
+	HAL_GPIO_Init(DHT11_PORT, &GPIO_InitStructure);
 }
  
 static void DHT11_DataPin_Configure_Input(void)

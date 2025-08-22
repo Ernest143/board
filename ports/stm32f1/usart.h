@@ -20,6 +20,7 @@ extern uint16_t g_usart_rx_sta;
 extern uint32_t g_usart_rx_cnt;
 
 void MX_USART1_UART_Init(void);
+void MX_USART1_UART_DeInit(void);
 void USART1_IRQHandler(void);
 extern void UART_Send_Msg(void);
 extern uint32_t usart_recive_data_length(void);

@@ -108,6 +108,9 @@ void remote_motor(void)
             board_flash_write(BOARD_FLASH_TOP_SPACE, (void const *)"UPDATE", 8);
             board_reset();
           }
+          if (g_key_list.eventList[idx].key_label == REMOTE_KEY_5) {
+            printf("hello zif!!!");
+          }
 
            memset(&g_key_list.eventList[idx], 0, sizeof(g_key_list.eventList[idx]));
       }
