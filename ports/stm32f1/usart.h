@@ -3,7 +3,7 @@
 
 #include "board_base.h"
 
-#define USART_REC_LEN               55 * 1024
+#define USART_REC_LEN               10 * 1024
 #define USART_EN_RX                 1
 #define RXBUFFERSIZE                1
 
@@ -23,8 +23,7 @@ void MX_USART1_UART_Init(void);
 void MX_USART1_UART_DeInit(void);
 void USART1_IRQHandler(void);
 extern void UART_Send_Msg(void);
-extern uint32_t usart_recive_data_length(void);
-extern uint32_t usart_read(void *buff, uint32_t btr, uint32_t *br);
+extern uint32_t usart_read(USART_TypeDef *uart, void *buff, uint32_t btr, uint32_t *br);
 /* USER CODE BEGIN PFP */
 // void usart_init(uint32_t pclk2, uint32_t bound);
 #endif

@@ -146,7 +146,7 @@ uint32_t board_flash_flush(uint32_t logical)
     /* Programming */
     do {
         data = 0xFFFFFFFFFFFFFFFF;
-        ret = usart_read(&data, sizeof(data), &outLen);
+        ret = usart_read(USART1, &data, sizeof(data), &outLen);
         if (outLen) {
             if (!(flash_ptr <= (FLASH_BASE_ADDR + BOARD_FLASH_SIZE - 8)) || 
                 (flash_ptr < logical)) {
@@ -180,7 +180,7 @@ uint32_t board_flash_flush(uint32_t logical)
     cntr = 0u;
     do {
         data = 0xFFFFFFFFFFFFFFFF;
-        ret = usart_read(&data, sizeof(uint32_t), &outLen);
+        ret = usart_read(USART1, &data, sizeof(uint32_t), &outLen);
         if (outLen) {
             if (*(uint32_t *)flash_ptr == (uint32_t)data) {
                 flash_ptr += 4;

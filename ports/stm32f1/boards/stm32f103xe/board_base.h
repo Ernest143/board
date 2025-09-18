@@ -9,6 +9,11 @@
 #define RX_PIN GPIO_PIN_10
 #define RX_GPIO_PORT GPIOA
 
+#define TX_PIN3 GPIO_PIN_10
+#define TX_GPIO_PORT3 GPIOB
+#define RX_PIN3 GPIO_PIN_11
+#define RX_GPIO_PORT3 GPIOB
+
 #define LED0_PIN GPIO_PIN_5
 #define LED0_GPIO_PORT GPIOB
 
@@ -65,11 +70,11 @@
 #define LCD_RS_GPIO_PIN                 GPIO_PIN_0
 #define LCD_RS_GPIO_CLK_ENABLE()        do{ __HAL_RCC_GPIOG_CLK_ENABLE(); }while(0)   /* ����IO��ʱ��ʹ�� */
 
-/* FSMC��ز��� ���� 
+/* FSMC��ز���? ���� 
  * ע��: ����Ĭ����ͨ��FSMC��1������LCD, ��1��4��Ƭѡ: FSMC_NE1~4
  *
- * �޸�LCD_FSMC_NEX, ��Ӧ��LCD_CS_GPIO�������Ҳ�ø�
- * �޸�LCD_FSMC_AX , ��Ӧ��LCD_RS_GPIO�������Ҳ�ø�
+ * �޸�LCD_FSMC_NEX, ��Ӧ��LCD_CS_GPIO�������Ҳ�ø�?
+ * �޸�LCD_FSMC_AX , ��Ӧ��LCD_RS_GPIO�������Ҳ�ø�?
  */
 #define LCD_FSMC_NEX         4              /* ʹ��FSMC_NE4��LCD_CS,ȡֵ��Χֻ����: 1~4 */
 #define LCD_FSMC_AX          10             /* ʹ��FSMC_A10��LCD_RS,ȡֵ��Χ��: 0 ~ 25 */
